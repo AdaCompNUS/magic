@@ -54,7 +54,14 @@ int main(int argc, char** argv) {
 
       // Write additional info.
       std::cout << belief.Error(sim) << std::endl; // Tracking error.
+    } else if (instruction == "RENDER") {
+      list_t<ExpSimulation> samples;
+      for (size_t i = 0; i < 1000; i++) {
+        samples.emplace_back(belief.Sample());
+      }
+      std::cout << SerializeFrame(sim.Render(samples)) << std::endl;
     }
   }
+
 }
 

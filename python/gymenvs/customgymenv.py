@@ -1,6 +1,7 @@
 from base64 import b64encode, b64decode
 from gym import spaces
 from subprocess import Popen, PIPE
+import cv2
 import gym
 import numpy as np
 import struct
@@ -36,8 +37,13 @@ class CustomGymEnv(gym.Env):
         self.process.stdin.flush()
         return self._read_state()
 
-    def render(self, mode):
-        raise NotImplementedError()
+    def render(self, mode='human'):
+        self.process.stdin.write('RENDER\n'.encode('utf8'))
+        self.process.stdin.flush()
+        frame_jpeg_raw = np.array([x[0] for x in struct.iter_unpack('B', b64decode(self.process.stdout.readline().decode('utf8').strip()))], dtype=np.uint8)
+        frame = cv2.imdecode(frame_jpeg_raw, flags=cv2.IMREAD_COLOR)
+        cv2.imshow('frame', frame)
+        cv2.waitKey(1)
 
     def _read_state(self):
         state_raw = np.array([x[0] for x in struct.iter_unpack('f', b64decode(self.process.stdout.readline().decode('utf8').strip()))])

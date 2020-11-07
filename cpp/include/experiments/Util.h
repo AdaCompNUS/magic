@@ -2,6 +2,7 @@
 #include "core/BezierCurve.h"
 #include <iostream>
 #include <macaron/Base64.h>
+#include <opencv2/imgcodecs.hpp>
 
 std::string get_cin_line() {
   std::string line;
@@ -15,6 +16,15 @@ std::string SerializeBelief(const ExpBelief& belief) {
     belief.Sample().Encode(values);
   }
   return macaron::Base64::Encode(ToBytes(values));
+}
+
+std::string SerializeFrame(const cv::Mat& frame) {
+  std::vector<uchar> buffer;
+  std::vector<int> params(2);
+  params[0] = cv::IMWRITE_JPEG_QUALITY;
+  params[1] = 95;
+  cv::imencode(".jpg", frame, buffer, params);
+  return macaron::Base64::Encode(ToBytes(buffer));
 }
 
 #ifndef SIM_VdpTag
