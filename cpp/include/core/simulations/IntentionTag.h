@@ -100,7 +100,9 @@ public:
 
   // Serialization functions.
   void Encode(list_t<float>& data) const;
-  cv::Mat Render(const list_t<IntentionTag>& belief_sims) const;
+  cv::Mat Render(const list_t<IntentionTag>& belief_sims,
+      const list_t<Action>& macro_action={},
+      const vector_t& macro_action_start={}) const;
 
   vector_t Goal(size_t intention) const;
   vector_t PreferredVelocity(size_t intention, const vector_t& position, float max_speed) const;
@@ -108,6 +110,7 @@ public:
 private:
 
   bool _is_terminal;
+  std::string _status;
   inline static array_t<std::optional<vector_t>, NUM_ADVERSARIAL_AGENTS> _adversarial_agent_initial_positions = {};
   inline static RVO::RVOSimulator* _rvo = NULL;
   inline static array_t<size_t, NUM_ADVERSARIAL_AGENTS> _rvo_ids = {};

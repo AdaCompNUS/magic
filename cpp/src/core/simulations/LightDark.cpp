@@ -134,7 +134,8 @@ void LightDark::Encode(list_t<float>& data) const {
   ego_agent_position.Encode(data);
 }
 
-cv::Mat LightDark::Render(const list_t<LightDark>& belief_sims) const {
+cv::Mat LightDark::Render(const list_t<LightDark>& belief_sims,
+    const list_t<Action>& macro_action, const vector_t& macro_action_start) const {
 
   constexpr float SCENARIO_MIN = -7.0f;
   constexpr float SCENARIO_MAX = 7.0f;
@@ -187,6 +188,37 @@ cv::Mat LightDark::Render(const list_t<LightDark>& belief_sims) const {
     cv::drawMarker(frame, to_frame(belief_sim.ego_agent_position), cv::Scalar(0, 255, 255),
         cv::MARKER_CROSS, 3, 2, cv::LINE_4);
   }
+
+  vector_t s = macro_action_start;
+  for (const Action& a : macro_action) {
+    vector_t e = s + vector_t(DELTA * EGO_SPEED, 0).rotated(a.orientation);
+    cv::line(frame, to_frame(s), to_frame(e),
+        cv::Scalar(75, 156, 0), 2, cv::LINE_AA);
+    s = e;
+  }
+
+  if (_is_terminal) {
+    if ((ego_agent_position - GOAL).norm() <= GOAL_ALLOWANCE) {
+      cv::putText(frame,
+          "Stop (Success)",
+          to_frame(ego_agent_position + vector_t(1.0, - EGO_RADIUS / 2)),
+          cv::FONT_HERSHEY_DUPLEX,
+          1.0,
+          cv::Scalar(0, 255, 0),
+          2,
+          cv::LINE_AA);
+    } else {
+      cv::putText(frame,
+          "Stop (Failure)",
+          to_frame(ego_agent_position + vector_t(1.0, - EGO_RADIUS / 2)),
+          cv::FONT_HERSHEY_DUPLEX,
+          1.0,
+          cv::Scalar(0, 0, 255),
+          2,
+          cv::LINE_AA);
+    }
+  }
+
 
   return frame;
 }

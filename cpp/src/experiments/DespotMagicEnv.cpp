@@ -55,6 +55,9 @@ int main(int argc, char** argv) {
       // Execute macro-action.
       ExpPlanner::ExecutionResult execution_result = ExpPlanner::ExecuteMacroAction(
           sim, search_result.action, ExpSimulation::MAX_STEPS - steps);
+#if defined SIM_LightDark || defined SIM_IntentionTag
+      vector_t macro_action_start = sim.ego_agent_position;
+#endif
       for (size_t i = 0; i < execution_result.state_trajectory.size(); i++) {
         belief.Update(search_result.action[i], execution_result.observation_trajectory[i]);
         sim = execution_result.state_trajectory[i];
@@ -65,7 +68,11 @@ int main(int argc, char** argv) {
           for (size_t i = 0; i < 1000; i++) {
             samples.emplace_back(belief.Sample());
           }
+#if defined SIM_LightDark || defined SIM_IntentionTag
+          cv::Mat frame = sim.Render(samples, search_result.action, macro_action_start);
+#else
           cv::Mat frame = sim.Render(samples);
+#endif
           cv::imshow("Frame", frame);
           cv::waitKey(1000 * ExpSimulation::DELTA);
         }

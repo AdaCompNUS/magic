@@ -26,7 +26,7 @@ uint64_t IntentionTag::Observation::Discretize() const {
 
 /* ====== Construction functions ====== */
 
-IntentionTag::IntentionTag() : step(0), _is_terminal(false) {
+IntentionTag::IntentionTag() : step(0), _is_terminal(false), _status("") {
 
 }
 
@@ -201,6 +201,7 @@ std::tuple<IntentionTag, float, IntentionTag::Observation, float> IntentionTag::
     if (next_sim.ego_agent_position.norm() >= RADIUS - EGO_RADIUS) {
       next_sim._is_terminal = true;
       reward = COLLISION_REWARD;
+      next_sim._status = "Failure (Bounds)";
     }
   }
   if (!next_sim._is_terminal) {
@@ -208,6 +209,7 @@ std::tuple<IntentionTag, float, IntentionTag::Observation, float> IntentionTag::
       if ((next_sim.adversarial_agent_positions[i] - next_sim.ego_agent_position).norm() <= EGO_RADIUS + ADVERSARIAL_RADIUS) {
         next_sim._is_terminal = true;
         reward = COLLISION_REWARD;
+        next_sim._status = "Failure (Adversarial)";
         break;
       }
     }
@@ -216,15 +218,18 @@ std::tuple<IntentionTag, float, IntentionTag::Observation, float> IntentionTag::
     if ((next_sim.target_agent_position - next_sim.ego_agent_position).norm() <= EGO_RADIUS + TARGET_RADIUS) {
       next_sim._is_terminal = true;
       reward = GOAL_REWARD;
+      next_sim._status = "Success (Tag)";
     } else {
       next_sim._is_terminal = true;
       reward = COLLISION_REWARD;
+      next_sim._status = "Failure (Tag)";
     }
   }
   if (!next_sim._is_terminal) {
     if (next_sim.step == MAX_STEPS) {
       reward = COLLISION_REWARD;
       next_sim._is_terminal = true;
+      next_sim._status = "Failure (Steps)";
     }
   }
   if (!next_sim._is_terminal) {
@@ -280,7 +285,8 @@ void IntentionTag::Encode(list_t<float>& data) const {
   }
 }
 
-cv::Mat IntentionTag::Render(const list_t<IntentionTag>& belief_sims) const {
+cv::Mat IntentionTag::Render(const list_t<IntentionTag>& belief_sims,
+    const list_t<Action>& macro_action, const vector_t& macro_action_start) const {
 
   constexpr float SCENARIO_MIN = -12.0f;
   constexpr float SCENARIO_MAX = 12.0f;
@@ -342,7 +348,7 @@ cv::Mat IntentionTag::Render(const list_t<IntentionTag>& belief_sims) const {
   // Draw adversarial agents.
   for (size_t i = 0; i < NUM_ADVERSARIAL_AGENTS; i++) {
     cv::circle(frame, to_frame(adversarial_agent_positions[i]), to_frame_dist(ADVERSARIAL_RADIUS),
-        cv::Scalar(198, 184, 254), -1, cv::LINE_AA);
+        cv::Scalar(255, 227, 253), -1, cv::LINE_AA);
     cv::circle(frame, to_frame(adversarial_agent_positions[i]), to_frame_dist(ADVERSARIAL_RADIUS),
         cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
   }
@@ -366,12 +372,36 @@ cv::Mat IntentionTag::Render(const list_t<IntentionTag>& belief_sims) const {
 
   // Draw belief positions.
   for (const simulations::IntentionTag& belief_sim : belief_sims) {
-    /*
-    cv::drawMarker(frame, to_frame(belief_sim.ego_agent_position), cv::Scalar(0, 0, 255),
-        cv::MARKER_CROSS, 2, 1, cv::LINE_4);
-    */
     cv::drawMarker(frame, to_frame(belief_sim.target_agent_position), cv::Scalar(0, 211, 255),
         cv::MARKER_CROSS, 1, 1, cv::LINE_4);
+  }
+
+  vector_t s = macro_action_start;
+  for (const Action& a : macro_action) {
+    vector_t e = s + vector_t(DELTA * EGO_SPEED, 0).rotated(a.orientation);
+    cv::line(frame, to_frame(s), to_frame(e),
+        cv::Scalar(75, 156, 0), 2, cv::LINE_AA);
+    s = e;
+  }
+
+  if (_status.rfind("Success", 0) == 0) {
+    cv::putText(frame,
+        _status,
+        cv::Point(5, 30),
+        cv::FONT_HERSHEY_DUPLEX,
+        1.0,
+        cv::Scalar(0, 255, 0),
+        2,
+        cv::LINE_AA);
+  } else if (_status.rfind("Failure", 0) == 0) {
+    cv::putText(frame,
+        _status,
+        cv::Point(5, 30),
+        cv::FONT_HERSHEY_DUPLEX,
+        1.0,
+        cv::Scalar(0, 0, 255),
+        2,
+        cv::LINE_AA);
   }
 
   return frame;
