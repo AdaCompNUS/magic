@@ -2,6 +2,7 @@
 
 #include "core/Util.h"
 #include "rvo2/RVO.h"
+#include "resources/beacon_img.h"
 #include <opencv2/imgproc.hpp>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -359,7 +360,10 @@ cv::Mat IntentionTag::Render(const list_t<IntentionTag>& belief_sims,
   cv::circle(frame, to_frame(target_agent_position), to_frame_dist(TARGET_RADIUS),
       cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
 
-  cv::Mat beacon_img = cv::imread("/home/leeyiyuan/beacon.png", cv::IMREAD_UNCHANGED);
+  // Draw beacon.
+  cv::Mat beacon_img = cv::imdecode(
+      std::vector<uint8_t>(resources::BEACON_IMG.begin(), resources::BEACON_IMG.end()),
+      cv::IMREAD_UNCHANGED);
   cv::resize(beacon_img, beacon_img, cv::Size(30, 30), 0, 0);
   cv::Mat channels[4];
   cv::split(beacon_img, channels);
