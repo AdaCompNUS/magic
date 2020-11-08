@@ -1,12 +1,12 @@
 #include "core/simulations/IntentionTag.h"
 
 #include "core/Util.h"
-#include "rvo2/RVO.h"
 #include "resources/beacon_img.h"
-#include <opencv2/imgproc.hpp>
+#include "rvo2/RVO.h"
 #include <opencv2/core.hpp>
-#include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 #include <random>
 #include <stdexcept>
 

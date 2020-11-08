@@ -1,5 +1,5 @@
-#include <string>
 #include <macaron/Base64.h>
+#include <string>
 
 namespace resources {
 

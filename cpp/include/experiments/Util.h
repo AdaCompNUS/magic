@@ -1,5 +1,5 @@
-#include "experiments/Config.h"
 #include "core/BezierCurve.h"
+#include "experiments/Config.h"
 #include <iostream>
 #include <macaron/Base64.h>
 #include <opencv2/imgcodecs.hpp>

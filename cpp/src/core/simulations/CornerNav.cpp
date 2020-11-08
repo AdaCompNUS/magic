@@ -3,8 +3,8 @@
 #include "core/Util.h"
 #include "rvo2/RVO.h"
 #include <opencv2/imgproc.hpp>
-#include <stdexcept>
 #include <random>
+#include <stdexcept>
 
 namespace simulations {
 

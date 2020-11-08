@@ -2,8 +2,8 @@
 
 #include "core/Types.h"
 #include <opencv2/core/mat.hpp>
-#include <vector>
 #include <rvo2/RVOSimulator.h>
+#include <vector>
 
 namespace simulations {
 

@@ -22,10 +22,10 @@ SOFTWARE.
 
 #pragma once
 
-#include <ostream>
-#include <vector>
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
+#include <ostream>
+#include <vector>
 
 class Vector2D {
 public:

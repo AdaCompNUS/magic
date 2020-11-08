@@ -1,11 +1,11 @@
 #include "core/Util.h"
 
+#include "boost/iostreams/device/null.hpp"
+#include "boost/iostreams/stream.hpp"
 #include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <random>
-#include "boost/iostreams/stream.hpp"
-#include "boost/iostreams/device/null.hpp"
 
 RVO::Vector2 ToRVO(const vector_t& v) {
   return RVO::Vector2(static_cast<float>(v.x), static_cast<float>(v.y));

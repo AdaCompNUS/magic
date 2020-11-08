@@ -1,10 +1,10 @@
 #pragma once
 
 #include "core/random/XorShift128Plus.h"
-#include <vector>
 #include <array>
 #include <cstdint>
 #include <math.h>
+#include <vector>
 
 template <typename T>
 using list_t = std::vector<T>;

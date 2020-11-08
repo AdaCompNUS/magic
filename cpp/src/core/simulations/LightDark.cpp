@@ -2,10 +2,10 @@
 
 #include "core/Util.h"
 #include <boost/functional/hash.hpp>
+#include <iostream>
 #include <opencv2/imgproc.hpp>
 #include <random>
 #include <stdexcept>
-#include <iostream>
 
 namespace simulations {
 

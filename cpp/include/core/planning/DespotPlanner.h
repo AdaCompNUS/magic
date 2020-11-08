@@ -1,11 +1,11 @@
 #pragma once
 
 #include "core/Belief.h"
-#include <despot/interface/pomdp.h>
 #include <despot/core/builtin_lower_bounds.h>
-#include <despot/util/logging.h>
 #include <despot/core/globals.h>
+#include <despot/interface/pomdp.h>
 #include <despot/solver/despot.h>
+#include <despot/util/logging.h>
 
 namespace planning {
 
