@@ -231,7 +231,8 @@ void PuckPush::Encode(list_t<float>& data) const {
   puck_position.Encode(data);
 }
 
-cv::Mat PuckPush::Render(const list_t<PuckPush>& belief_sims) const {
+cv::Mat PuckPush::Render(const list_t<PuckPush>& belief_sims,
+    const list_t<Action>& macro_action, const vector_t& macro_action_start) const {
 
   constexpr float SCENARIO_MIN_HORIZONTAL = -30.0f;
   constexpr float SCENARIO_MAX_HORIZONTAL = 1310.0f;
@@ -299,6 +300,14 @@ cv::Mat PuckPush::Render(const list_t<PuckPush>& belief_sims) const {
 
     cv::drawMarker(frame, to_frame(belief_sim.puck_position), cv::Scalar(0, 0, 255),
         cv::MARKER_CROSS, 2, 1, cv::LINE_4);
+  }
+
+  vector_t s = macro_action_start;
+  for (const Action& a : macro_action) {
+    vector_t e = s + vector_t(DELTA * BOT_SPEED, 0).rotated(a.orientation);
+    cv::line(frame, to_frame(s), to_frame(e),
+        cv::Scalar(75, 156, 0), 2, cv::LINE_AA);
+    s = e;
   }
 
   return frame;

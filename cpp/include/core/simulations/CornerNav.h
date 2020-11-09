@@ -108,7 +108,9 @@ public:
 
   // Serialization functions.
   void Encode(list_t<float>& data) const;
-  cv::Mat Render(const list_t<CornerNav>& belief_sims) const;
+  cv::Mat Render(const list_t<CornerNav>& belief_sims,
+      const list_t<Action>& macro_action={},
+      const vector_t& macro_action_start={}) const;
 
 private:
 

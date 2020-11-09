@@ -279,7 +279,8 @@ void CornerNav::Encode(list_t<float>& data) const {
   }
 }
 
-cv::Mat CornerNav::Render(const list_t<CornerNav>& belief_sims) const {
+cv::Mat CornerNav::Render(const list_t<CornerNav>& belief_sims,
+    const list_t<Action>& macro_action, const vector_t& macro_action_start) const {
 
   constexpr float SCENARIO_MIN = -22.0f;
   constexpr float SCENARIO_MAX = 22.0f;
@@ -331,6 +332,13 @@ cv::Mat CornerNav::Render(const list_t<CornerNav>& belief_sims) const {
   cv::circle(frame, to_frame(GOAL), to_frame_dist(GOAL_RADIUS),
       cv::Scalar(255, 0, 255), -1, cv::LINE_AA);
 
+  vector_t s = macro_action_start;
+  for (const Action& a : macro_action) {
+    vector_t e = s + vector_t(DELTA * EGO_SPEED, 0).rotated(a.orientation);
+    cv::line(frame, to_frame(s), to_frame(e),
+        cv::Scalar(75, 156, 0), 2, cv::LINE_AA);
+    s = e;
+  }
   return frame;
 
 
