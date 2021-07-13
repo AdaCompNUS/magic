@@ -1,0 +1,4 @@
+*.swp
+.clangd
+nohup.out
+__pycache__/

@@ -1,0 +1,6 @@
+{
+  "save-url": "localhost",
+  "save-port": 8444,
+  "model": "critic_model.pt.00310000",
+  "cert": "cacert.pem"
+}
