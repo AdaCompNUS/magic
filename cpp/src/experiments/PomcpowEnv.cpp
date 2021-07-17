@@ -60,13 +60,6 @@ int main(int argc, char** argv) {
       // Execute planner result.
       std::tuple<ExpSimulation, float, ExpSimulation::Observation, float> step_result = sim.Step<false>(search_result.action);
 
-      // Update belief and sim.
-      belief.Update(search_result.action, std::get<2>(step_result));
-      belief_error_statistics.emplace_back(belief.Error(std::get<0>(step_result)));
-      min_belief_error_statistics[0] = std::min(min_belief_error_statistics[0], belief_error_statistics.back());
-      sim = std::get<0>(step_result);
-      steps++;
-
       if (vm.count("visualize")) {
         list_t<ExpSimulation> samples;
         for (size_t i = 0; i < 1000; i++) {
@@ -76,6 +69,13 @@ int main(int argc, char** argv) {
         cv::imshow("Frame", frame);
         cv::waitKey(1000 * ExpSimulation::DELTA);
       }
+
+      // Update belief and sim.
+      belief.Update(search_result.action, std::get<2>(step_result));
+      belief_error_statistics.emplace_back(belief.Error(std::get<0>(step_result)));
+      min_belief_error_statistics[0] = std::min(min_belief_error_statistics[0], belief_error_statistics.back());
+      sim = std::get<0>(step_result);
+      steps++;
 
       std::cout << search_result.value << std::endl; // Seach max value.
       std::cout << 1 << std::endl; // Execution num steps.

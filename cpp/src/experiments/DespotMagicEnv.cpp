@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
       for (size_t i = 0; i < execution_result.state_trajectory.size() && !belief.IsTerminal(); i++) {
         if (vm.count("visualize")) {
           list_t<ExpSimulation> samples;
-          for (size_t i = 0; i < 1000; i++) {
+          for (size_t j = 0; j < 1000; j++) {
             samples.emplace_back(belief.Sample());
           }
           cv::Mat frame = sim.Render(samples, macro_actions, macro_action_start);

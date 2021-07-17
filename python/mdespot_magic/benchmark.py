@@ -120,7 +120,6 @@ if __name__ == '__main__':
     else:
         gen_model = MAGICGenNet(CONTEXT_SIZE, PARTICLE_SIZE, CONTEXT_DEPENDENT, BELIEF_DEPENDENT).to(device).float()
 
-    '''
     print('{} |{} |{} |{} |{} |{} |{} |{} |{} |{}'.format(
         'Batch'.rjust(10, ' '),
         'Steps'.rjust(16, ' '),
@@ -133,7 +132,6 @@ if __name__ == '__main__':
         'Stat1'.rjust(16, ' '),
         'Stat2'.rjust(16, ' '),
         'Stat3'.rjust(16, ' ')))
-    '''
 
     if BATCH_MODE:
         batch_step = 0

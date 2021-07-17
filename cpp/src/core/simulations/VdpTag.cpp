@@ -1,6 +1,7 @@
 #include "core/simulations/VdpTag.h"
 
 #include "core/Util.h"
+#include <opencv2/core/types.hpp>
 #include <opencv2/imgproc.hpp>
 #include <random>
 
@@ -231,21 +232,20 @@ cv::Mat VdpTag::Render(const list_t<VdpTag>& belief_sims) const {
       CV_8UC3,
       cv::Scalar(255, 255, 255));
 
-  for (const simulations::VdpTag& sim : belief_sims) {
-    cv::circle(frame, to_frame(sim.exo_agent_position), to_frame_dist(VdpTag::TAG_RADIUS * 0.1f),
-        cv::Scalar(0, 255, 255), -1, cv::LINE_AA);
-    cv::circle(frame, to_frame(sim.ego_agent_position), to_frame_dist(VdpTag::TAG_RADIUS * 0.1f),
-        cv::Scalar(255, 255, 0), -1, cv::LINE_AA);
-    for (vector_t dir : list_t<vector_t>{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}) {
-      cv::line(
-          frame,
-          to_frame(0.2f * dir),
-          to_frame(3.0f * dir), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
-    }
+  for (vector_t dir : list_t<vector_t>{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}) {
+    cv::line(
+        frame,
+        to_frame(0.2f * dir),
+        to_frame(3.0f * dir), cv::Scalar(0, 0, 0), 1, cv::LINE_AA);
   }
 
   cv::circle(frame, to_frame(exo_agent_position), to_frame_dist(TAG_RADIUS),
       cv::Scalar(0, 255, 0), -1, cv::LINE_AA);
+  for (const simulations::VdpTag& sim : belief_sims) {
+    cv::drawMarker(frame, to_frame(sim.exo_agent_position),
+        cv::Scalar(0, 0, 0), cv::MARKER_TILTED_CROSS, static_cast<int>(to_frame_dist(VdpTag::TAG_RADIUS) * 0.2f), 2, cv::LINE_AA);
+  }
+
   cv::circle(frame, to_frame(ego_agent_position), to_frame_dist(TAG_RADIUS),
       cv::Scalar(255, 0, 0), -1, cv::LINE_AA);
   for (vector_t dir : list_t<vector_t>{{1, 0}, {0, 1}, {-1, 0}, {0, -1}}) {

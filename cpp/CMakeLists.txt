@@ -106,6 +106,7 @@ message("Adding environment tests:")
 foreach(TASK
     LightDark
     PuckPush
+    VdpTag
     )
   message("  TaskTest${TASK}")
   add_executable("TaskTest${TASK}" src/experiments/TaskTest.cpp)
