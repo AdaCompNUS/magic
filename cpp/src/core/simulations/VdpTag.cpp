@@ -141,6 +141,7 @@ std::tuple<VdpTag, float, VdpTag::Observation, float> VdpTag::Step(
   }
   next_sim.exo_agent_position.x += std::normal_distribution<float>(0.0, POS_STD)(RngDet());
   next_sim.exo_agent_position.y += std::normal_distribution<float>(0.0, POS_STD)(RngDet());
+  next_sim.step++;
 
   // Check terminal and rewards.
   if ((next_sim.ego_agent_position - next_sim.exo_agent_position).norm() < TAG_RADIUS) {
@@ -151,6 +152,13 @@ std::tuple<VdpTag, float, VdpTag::Observation, float> VdpTag::Step(
   }
   if (action.look) {
     reward += ACTIVE_MEAS_REWARD;
+  }
+
+  if (!_is_terminal) {
+    if (next_sim.step == MAX_STEPS) {
+      next_sim._is_terminal = true;
+      next_sim._is_failure = true;
+    }
   }
 
   /* ====== Step 2: Generate observation. ====== */

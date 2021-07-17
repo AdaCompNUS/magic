@@ -19,7 +19,6 @@ import numpy as np
 import queue
 import struct
 import time
-import torch
 import zmq
 
 TASK = args.task

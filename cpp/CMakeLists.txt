@@ -54,6 +54,7 @@ message("Adding POMCPOW environments")
 foreach(TASK
     LightDark
     PuckPush
+    VdpTag
     )
   message("  PomcpowEnv${TASK}")
   add_executable("PomcpowEnv${TASK}" src/experiments/PomcpowEnv.cpp)

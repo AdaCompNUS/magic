@@ -43,9 +43,6 @@ public:
   static constexpr float POMCPOW_K_OBSERVATION = 5.0f;
   static constexpr float POMCPOW_ALPHA_OBSERVATION = 1.0f / 100;
 
-  // DESPOT related parameters.
-  static constexpr size_t DESPOT_NUM_SCENARIOS = 200;
-
   // Experiment related parameters.
   static constexpr size_t MAX_STEPS = 100;
 
@@ -65,6 +62,7 @@ public:
     static list_t<list_t<Action>> CreateHandcrafted(size_t length);
   };
 
+  size_t step;
   vector_t ego_agent_position;
   vector_t exo_agent_position;
 
@@ -81,6 +79,7 @@ public:
 
   /* ====== Stepping functions ====== */
   bool IsTerminal() const { return _is_terminal; }
+  bool IsFailure() const { return _is_failure; }
   template <bool compute_log_prob>
   std::tuple<VdpTag, float, Observation, float> Step(
       const Action& action, const Observation* observation=nullptr) const;
@@ -92,6 +91,7 @@ public:
 private:
 
   bool _is_terminal;
+  bool _is_failure;
   static float Cross(const vector_t& a, const vector_t& b);
   vector_t VdpDynamics(const vector_t& v) const;
   vector_t Rk4Step(const vector_t& v) const;
