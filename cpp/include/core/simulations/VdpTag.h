@@ -33,8 +33,8 @@ public:
   static constexpr float ACTIVE_MEAS_REWARD = -5.0f;
   static constexpr float GAMMA = 0.98f;
   static constexpr float WORST_REWARD = (STEP_REWARD + ACTIVE_MEAS_REWARD) / (1.0f - GAMMA);
-  static constexpr size_t SEARCH_DEPTH = 40;
-  static constexpr size_t PLANNING_TIME = 50;
+  static constexpr size_t SEARCH_DEPTH = 10;
+  static constexpr size_t PLANNING_TIME = 1000;
 
   // POMCPOW related parameters.
   static constexpr float POMCPOW_UCB = 110;

@@ -83,7 +83,7 @@ int main(int argc, char** argv) {
 
         if (vm.count("visualize")) {
           list_t<ExpSimulation> samples;
-          for (size_t i = 0; i < 1000; i++) {
+          for (size_t j = 0; j < 1000; j++) {
             samples.emplace_back(belief.Sample());
           }
           cv::Mat frame = sim.Render(samples, macro_action, macro_action_start);
