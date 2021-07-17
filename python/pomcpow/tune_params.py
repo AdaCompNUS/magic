@@ -21,9 +21,9 @@ parser = argparse.ArgumentParser(description='POMCPOW Parameters Tuning Args')
 parser.add_argument('--task', required=True,
                     help='Task')
 parser.add_argument('--trials', type=int, default=30,
-                    help='Number of trials (default: 50)')
-parser.add_argument('--num-env', type=int, default=64,
-                    help='Number of environments (default: 64)')
+                    help='Number of trials (default: 30)')
+parser.add_argument('--num-env', type=int, default=16,
+                    help='Number of environments (default: 16)')
 args = parser.parse_args()
 
 TASK = args.task

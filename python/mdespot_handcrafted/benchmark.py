@@ -6,8 +6,8 @@ parser.add_argument('--task', required=True,
                     help='Task')
 parser.add_argument('--macro-length', type=int, required=True,
                     help='Macro-action length')
-parser.add_argument('--num-env', type=int, default=8,
-                    help='Number of environments (default: 8)')
+parser.add_argument('--num-env', type=int, default=16,
+                    help='Number of environments (default: 16)')
 parser.add_argument('--target-se', type=float, default=0.1,
                     help='Target standard error  (default: 0.1)')
 args = parser.parse_args()

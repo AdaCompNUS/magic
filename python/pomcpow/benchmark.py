@@ -4,8 +4,8 @@ import argparse
 parser = argparse.ArgumentParser(description='POMCPOW Benchmarking Args')
 parser.add_argument('--task', required=True,
                     help='Task')
-parser.add_argument('--num-env', type=int, default=8,
-                    help='Number of environments (default: 8)')
+parser.add_argument('--num-env', type=int, default=16,
+                    help='Number of environments (default: 16)')
 args = parser.parse_args()
 
 import os

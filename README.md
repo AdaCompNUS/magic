@@ -53,20 +53,26 @@ To run the (virtual) experiments, you will need to have:
 The `python` folder contains all scripts to run experiments. It is split into multiple subfolders each serving a different purpose.
 
 - ~~`alphabot/`: Scripts which are run on a real world robot to listen to control commands over WiFi~~ (You won't need this for the virtual experiments).
-- `gymenvs/`: Contains OpenAI Gym wrapper environments for the C++ environment binaries for our tasks.
 - `mdespot_handcrafted/`: Scripts to run (Macro-)DESPOT using handcrafted actions/macro-actions on our tasks.
-    - `benchmark.py`: to test performance.
     - `evaluate.py`: to visualize the approach.
-    - For DESPOT without macro-actions, simply use `--macro-length=1` where necessary.
+        - e.g. `python3 evaluate.py --task=LightDark --macro-length=4`
+    - `benchmark.py`: to test performance.
+        - e.g. `python3 benchmark.py --task=LightDark --macro-length=4 --num-env=16`
 - `mdespot_magic/`: Scripts to run DESPOT using MAGIC on our tasks.
-    - `train.py` to train a Parameters-Net.
-    - `evaluate.py` to visualize the approach using a trained Parameters-Net.
-    - `benchmark.py` to test performance using a trained Parameters-Net.
+    - `evaluate.py` to visualize the approach using a trained Generator.
+      - e.g. `python3 evaluate.py --task=LightDark --macro-length=8 --model-path=../models/learned_LightDark_8 --model-index=500000`
+    - `benchmark.py` to test performance using a trained Generator.
+      - e.g. `python3 benchmark.py --task=LightDark --macro-length=8 --num-env=16 --models-folder=../models/learned_LightDark_8 --model-index=500000`
+    - `train.py` to train both Generator + Critic.
+      - e.g. `python3 train.py --task=LightDark --macro-length=8 --num-env=16 --num-iterations=500000 --output-dir=../models/learned_LightDark_8`
 - `models/`: Contains the neural networks used. Also contains the trained models for each task.
 - `pomcpow/`: Scripts to run POMCPOW for our tasks.
+    - `valuate.py`: to visualize the approach.
+        - e.g. `python3 --task=LightDark`
     - `benchmark.py`: to test performance.
-    - `evaluate.py`: to visualize the approach.
+        - e.g. `python3 --task=LightDark --num-env=16 `
     - `tune_params.py`: to tune the POMCPOW hyperparameters via grid search.
+        - e.g. `python3 --task=LightDark --trials=30 --num-env=16`
 - ~~`rwi/`: Scripts to run real world experiments~~ (You won't need this for the virtual experiments).
 - `utils/`: Miscellaneous utilities and static variables.
 
