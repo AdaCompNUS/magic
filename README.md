@@ -2,13 +2,15 @@
 
 This repository contains the source code for our project on learning macro-actions using the Macro-Action Generator-Critic (MAGIC) algorithm:
 
-    @INPROCEEDINGS{lee2021magic,
-        AUTHOR    = {Yiyuan Lee AND Panpan Cai AND David Hsu},
-        TITLE     = {{MAGIC: Learning Macro-Actions for Online POMDP Planning}},
-        BOOKTITLE = {Robotics: Science and Systems},
-        YEAR      = {2021},
-        DOI       = {10.15607/RSS.2021.XVII.041}
-    }
+    @INPROCEEDINGS{Lee-RSS-21, 
+        AUTHOR    = {Yiyuan Lee AND Panpan Cai AND David Hsu}, 
+        TITLE     = {{MAGIC: Learning Macro-Actions for Online POMDP Planning }}, 
+        BOOKTITLE = {Proceedings of Robotics: Science and Systems}, 
+        YEAR      = {2021}, 
+        ADDRESS   = {Virtual}, 
+        MONTH     = {July}, 
+        DOI       = {10.15607/RSS.2021.XVII.041} 
+    } 
 
 ### Overview
 
