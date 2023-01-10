@@ -62,7 +62,7 @@ The `python` folder contains all scripts to run experiments. It is split into mu
         - e.g. `python3 benchmark.py --task=LightDark --macro-length=4 --num-env=16`
 - `mdespot_magic/`: Scripts to run DESPOT using MAGIC on our tasks.
     - `evaluate.py` to visualize the approach using a trained Generator.
-      - e.g. `python3 evaluate.py --task=LightDark --macro-length=8 --model-path=../models/learned_LightDark_8 --model-index=500000`
+      - e.g. `python3 evaluate.py --task=LightDark --macro-length=8 --model-path=../models/learned_LightDark_8/gen_model.pt.00500000`
     - `benchmark.py` to test performance using a trained Generator.
       - e.g. `python3 benchmark.py --task=LightDark --macro-length=8 --num-env=16 --models-folder=../models/learned_LightDark_8 --model-index=500000`
     - `train.py` to train both Generator + Critic.
