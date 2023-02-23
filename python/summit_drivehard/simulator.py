@@ -113,7 +113,7 @@ def environment_process(port):
     socket.connect('{}:{}'.format(ZMQ_ADDRESS, port))
 
     if args.mode == 'magic':
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        device = torch.device("cpu")
         gen_model = MAGICGenNet_DriveHard(MACRO_LENGTH, True, True).float().to(device)
         gen_model.load_state_dict(torch.load(args.model_path))
         gen_model_lambda = lambda context, state: gen_model.mode(
@@ -212,8 +212,6 @@ def environment_process(port):
 
         env.terminate()
 
-    except:
-        pass
     finally:
         socket.close()
         zmq_context.term()
@@ -346,9 +344,8 @@ class CarlaSimulator:
                 SUMMIT_PATH,
                 '-carla-port={}'.format(self.port),
                 '-quality-level={}'.format('Epic' if VISUALIZE else 'Low'),
-                '-opengl'
+                '' if VISUALIZE else '-RenderOffscreen',
             ],
-            env=dict(os.environ, SDL_VIDEODRIVER='' if VISUALIZE else 'offscreen'),
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -480,12 +477,10 @@ class CarlaSimulator:
                 '--num-car={}'.format(NUM_EXO_AGENTS),
                 '--num-bike=0',
                 '--num-pedestrian=0',
-                '--no-respawn',
                 '--seed={}'.format(int(time.time())),
                 '--speed-car={}'.format(EXO_AGENT_PREF_SPEED),
                 '--port={}'.format(self.port),
                 '--pyroport={}'.format(self.pyro_port),
-                '--aim-center'
             ],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
@@ -495,7 +490,8 @@ class CarlaSimulator:
         debug_print('        Delaying for crowd service to launch...')
         time.sleep(3)
         debug_print('        Waiting for spawn target to be reached...')
-        while not self.crowd_service.spawn_target_reached:
+        time.sleep(5)
+        while self.crowd_service.spawn_car:
             time.sleep(0.2)
 
         # Assign actor id to indexes.
@@ -771,8 +767,6 @@ if __name__ == '__main__':
                 max_depth,
                 steer_max, sim.steps, 1 if episode_failure else 0)
 
-    except:
-        pass
     finally:
         sim.terminate()
         socket.close()
